@@ -2,7 +2,7 @@ interface i1
 {
     void eat();
 }
-interface i2 extends i1
+interface i2
 {
     void repeat();
 }
