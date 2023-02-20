@@ -45,10 +45,9 @@ public class HotelBooking {
         cheapestFound = true;
       }
     }
-
     // Calculate cost for The Park hotel
 
-    if (rating == 5 && !cheapestFound && days>=1&&days<=31) {
+    if (rating == 5  && days>=1&&days<=31  && !cheapestFound) {
       double cost = days * 90;
       if (days > 2) {
         cost = cost - (cost * 0.2);
@@ -59,6 +58,8 @@ public class HotelBooking {
         cheapestFound = true;
       }
     }
+
+
 
     // Calculate cost for RainTree hotel
     if (rating == 3 && !cheapestFound && days>=1&&days<=31) {
@@ -114,13 +115,13 @@ public class HotelBooking {
     if (cheapestFound) {
       return "Hotel Booked for " + days + " days in " + rating + " star hotel " + hotelName + " for the cost of $" + totalCost;
     } else {
-      return "Sorry! you dont have sufficient amount to book any hotel or Insufficient data";
+      return "Sorry! you don't have sufficient amount to book any hotel or Insufficient data";
     }
   }
 
   public static void main(String[] args) {
     // Example usage
-    String booking = bookHotel(300, 0, 5);
+    String booking = bookHotel(300, 1, 5);
     System.out.println(booking);
   }
 }
