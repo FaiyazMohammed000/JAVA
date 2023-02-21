@@ -6,12 +6,12 @@
         2.  star rating - will be any one of (5,3,1)
         3.  amount - the total amount Rohit can spent max.
         Hotel Details:
-        1. The Park, 5 star hotel, will cost $90/day, but if customer stays more than 2 days, then customer gets 20% off on total cost.
-        2. Hotel Hyaat, 5 star hotel, will cost $82/day, but if customer stays more than 3 days, then customer gets 12% off on total cost.
-        3. Raddisson, 3 star hotel, will cost $60/day, but if customer stays more than 3 days, then customer gets 18% off on total cost.
-        4. RainTree, 3 star hotel, will cost $58/day, but if customer stays more than 2 days, then customer gets 15% off on total cost.
-        5. Accord, 1 star hotel, will cost $41.55/day, but if customer stays more than 3 days, then customer gets 11.8% off on total cost.
-        6. Fortune, 1 star hotel, will cost $43/day, but if customer stays more than 4 days, then customer gets 14.8% on total cost.
+        1. The Park, 5-star hotel, will cost $90/day, but if customer stays more than 2 days, then customer gets 20% off on total cost.
+        2. Hotel Hyaat, 5-star hotel, will cost $82/day, but if customer stays more than 3 days, then customer gets 12% off on total cost.
+        3. Raddisson, 3-star hotel, will cost $60/day, but if customer stays more than 3 days, then customer gets 18% off on total cost.
+        4. RainTree, 3-star hotel, will cost $58/day, but if customer stays more than 2 days, then customer gets 15% off on total cost.
+        5. Accord, 1-star hotel, will cost $41.55/day, but if customer stays more than 3 days, then customer gets 11.8% off on total cost.
+        6. Fortune, 1-star hotel, will cost $43/day, but if customer stays more than 4 days, then customer gets 14.8% on total cost.
         Challenge:
         Create a static method "bookHotel" with 3 arguments and return type as string,
         1. money (Double dataType) -  total amount customer has
@@ -51,7 +51,7 @@ class Hotel
     }
 }
 public class HotelBookingWithoops {
-     public static String bookHotel(double money,int days, int ratings) {
+     public static String bookHotel(double money,int days, int ratings,Boolean autoUpgrade) {
          Hotel[] hotels = {
                  new Hotel("The Park", 5, 90, 2, 20),
                  new Hotel("Hotel Hyaat",5,82,3,12),
@@ -61,26 +61,33 @@ public class HotelBookingWithoops {
                  new Hotel("Fortune",1,43,4,14.8)
         };
          Hotel cheapestHotel=null;
-         for (Hotel hotel:hotels)
-         {
-             if (hotel.starRatings==ratings && hotel.getCost(days)<=money && days>=1&&days<=31 ) {
-                 if (cheapestHotel==null||hotel.getCost(days)<cheapestHotel.getCost(days)){
-                     cheapestHotel=hotel;
+         for (Hotel hotel:hotels) {
+             if (hotel.starRatings >= ratings && hotel.getCost(days) <= money && days >= 1 && days <= 31) {
+                 if (cheapestHotel == null || hotel.getCost(days) < cheapestHotel.getCost(days)) {
+                     cheapestHotel = hotel;
+
+              if(autoUpgrade==false&&cheapestHotel.starRatings>ratings)
+                 {
+                     cheapestHotel=null;
+                 } else if (autoUpgrade==true&&cheapestHotel.starRatings>ratings) {
+
+                    ratings=cheapestHotel.starRatings;
                  }
-             }
+                 }
          }
+          }
          if (cheapestHotel==null)
          {
-             return "Sorry! you dont have sufficient amount to book any hotel or Minimum booking days should be greater than one";
+             return "Sorry! you don't have sufficient amount to book any hotel or Minimum booking days should be greater than one";
          }
          else {
              double totalCost=cheapestHotel.getCost(days);
-             return "Hotel Booked for "+days+"days in "+ratings+" star Hotel "+cheapestHotel.name+" for the cost of &"+totalCost;
+             return "Hotel Booked for "+days+" days in "+ratings+" star Hotel "+cheapestHotel.name+" for the cost of &"+totalCost;
          }
      }
     public static void main(String[] args) {
-        System.out.println(bookHotel(100,0,3));
-        System.out.println(bookHotel(1000,1,5));
-        System.out.println(bookHotel(200,2,1));
+         System.out.println(bookHotel(1000,1,3,false));
+        System.out.println(bookHotel(100000,0,3,true));
+        System.out.println(bookHotel(200,1,5,true));
     }
 }
