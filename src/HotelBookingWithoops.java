@@ -58,24 +58,24 @@ public class HotelBookingWithoops {
                  new Hotel("Radisson",3,60,3,18),
                  new Hotel("RainTree",3,58,2,15),
                  new Hotel("Accord",1,41.55,3,11.8),
-                 new Hotel("Fortune",1,43,4,14.8)
+                 new Hotel("Fortune",1,43,4,14.8),
+                 new Hotel("Faiyaz",5,19,2,20)
         };
          Hotel cheapestHotel=null;
          for (Hotel hotel:hotels) {
              if (hotel.starRatings >= ratings && hotel.getCost(days) <= money && days >= 1 && days <= 31) {
                  if (cheapestHotel == null || hotel.getCost(days) < cheapestHotel.getCost(days)) {
                      cheapestHotel = hotel;
-
-              if(autoUpgrade==false&&cheapestHotel.starRatings>ratings)
-                 {
+                    if(autoUpgrade==false&&cheapestHotel.starRatings>ratings)
+                     {
                      cheapestHotel=null;
-                 } else if (autoUpgrade==true&&cheapestHotel.starRatings>ratings) {
-
-                    ratings=cheapestHotel.starRatings;
+                     }
+                     else if (autoUpgrade==true&&cheapestHotel.starRatings>ratings) {
+                         ratings=cheapestHotel.starRatings;
+                     }
                  }
-                 }
+            }
          }
-          }
          if (cheapestHotel==null)
          {
              return "Sorry! you don't have sufficient amount to book any hotel or Minimum booking days should be greater than one";
@@ -86,8 +86,8 @@ public class HotelBookingWithoops {
          }
      }
     public static void main(String[] args) {
-         System.out.println(bookHotel(1000,1,3,false));
+         System.out.println(bookHotel(1000,1,3,true));
         System.out.println(bookHotel(100000,0,3,true));
-        System.out.println(bookHotel(200,1,5,true));
+        System.out.println(bookHotel(200,1,5,false));
     }
 }
