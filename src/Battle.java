@@ -12,7 +12,7 @@ import java.util.*;
 
 enum Type
 {
-    HANDS,CROSSBOW,AXE,SWORDS
+    HERO,VILLIAN
 }
 class Character
 {
@@ -31,9 +31,6 @@ class Character
 
     public void attack(Character target){
         int damage=this.attack;
-        /*if (this.type==target.type){
-            damage*=2;
-        }*/
        target.health-=damage;
     }
     public String toString(){
@@ -45,31 +42,33 @@ class Character
          HashSet<Character> heroes = new HashSet<>();
          HashSet<Character> villians = new HashSet<>();
          // creating heroes
-         Character hero1 = new Character("Bhamsi", 100, 100, Type.SWORDS);
-         Character hero2 = new Character("Turgut", 100, 100, Type.AXE);
-         Character hero3 = new Character("Duan", 100, 100, Type.CROSSBOW);
-         Character hero4 = new Character("Ertugrul", 100, 100, Type.HANDS);
+         Character hero1 = new Character("Bhamsi", 100, 100, Type.HERO);
+         Character hero2 = new Character("Turgut", 100, 100, Type.HERO);
+         Character hero3 = new Character("Duan", 100, 100, Type.HERO);
+         Character hero4 = new Character("Ertugrul", 100, 100, Type.HERO);
          heroes.add(hero1);
          heroes.add(hero2);
          heroes.add(hero3);
          heroes.add(hero4);
          // creating villians
-         Character villian1 = new Character("Dragos", 40, 40, Type.SWORDS);
-         Character villian2 = new Character("Emir Sadetin", 15, 50, Type.AXE);
-         Character villian3 = new Character("Vasilius", 30, 40, Type.CROSSBOW);
-         Character villian4 = new Character("Noyan", 50, 50, Type.HANDS);
+         Character villian1 = new Character("Dragos", 40, 40, Type.VILLIAN);
+         Character villian2 = new Character("Emir Sadetin", 15, 50, Type.VILLIAN);
+         Character villian3 = new Character("Vasilius", 100, 100, Type.VILLIAN);
+         Character villian4 = new Character("Noyan", 50, 50, Type.VILLIAN);
          villians.add(villian1);
          villians.add(villian2);
          villians.add(villian3);
          villians.add(villian4);
          //creating map
-         Map<Type, Integer> heroBattlesWon = new HashMap<>();
-         Map<Type, Integer> villiansBattlesWon = new HashMap<>();
+         Map<Type, Integer> scoreBoard = new HashMap<>();
+        // Map<Type, Integer> villiansBattlesWon = new HashMap<>();
          for (Type type : Type.values()) {
-             heroBattlesWon.put(type, 0);
-             villiansBattlesWon.put(type, 0);
+             scoreBoard.put(type, 0);
+             //villiansBattlesWon.put(type, 0);
          }
          int battleCount = 0;
+         int heroesWon=0;
+         int villianWon=0;
          while (!heroes.isEmpty() && !villians.isEmpty()) {
              battleCount++;
              System.out.println("Battles : " + battleCount);
@@ -79,34 +78,37 @@ class Character
              //villians attacks first
              villian.attack(hero);
              System.out.println(villian.name + " attacked " + hero.name + " for " + villian.attack + " damage");
-             //hero attacks second
+             //heroes attack
              if (hero.health > 0) {
                  hero.attack(villian);
                  System.out.println(hero.name + " attacked " + villian.name + " for " + hero.attack + " damage");
              }
-             //Remove characters with 0 health
+             heroes.remove(hero);
+             villians.remove(villian);
+
              if (hero.health <= 0) {
-                 heroes.remove(hero);
+                 //  heroes.remove(hero);
+                 villianWon++;
+                 scoreBoard.put((Type.VILLIAN), villianWon);
              }
              if (villian.health <= 0) {
-                 villians.remove(villian);
-             }
-             //update battle count
-             if (hero.health > 0) {
-                 heroBattlesWon.put(hero.type, heroBattlesWon.get(hero.type) + 1);
-             }
-             if (villian.health > 0) {
-                 villiansBattlesWon.put((villian.type), villiansBattlesWon.get(villian.type) + 1);
+                 // villians.remove(villian);
+                 heroesWon++;
+                 scoreBoard.put(Type.HERO, heroesWon);
              }
          }
-         //determining the winner
-         if (heroes.isEmpty()) {
-             System.out.println("villians won after " + battleCount + " battles");
-         } else {
+
+         if(heroesWon>villianWon){
              System.out.println("heroes won after " + battleCount + " battles");
          }
-         System.out.println("heroes battle counts: " + heroBattlesWon);
-         System.out.println("villians battle counts: " + villiansBattlesWon);
+         else if (villianWon>heroesWon) {
+             System.out.println("villians won after " + battleCount + " battles");
+         }
+         else {
+             System.out.println("The battle is Tied");
+         }
+         System.out.println("heroes battle counts: " + scoreBoard.get(Type.HERO));
+         System.out.println("villians battle counts: " + scoreBoard.get(Type.VILLIAN));
      }
 
      public static Character getRandomCharacter(Set<Character> characters) {
